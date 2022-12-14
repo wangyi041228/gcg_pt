@@ -22,7 +22,7 @@ def work(roll=8, target='3雷3草', keep='', rerolls=2):
     max_gar = roll + keep_dice_count - target_dice_count
 
     while reroll_n < rerolls:
-        # t0 = time.process_time()
+        t0 = time.process_time()
         new_state_dict = {}
         for state in state_dict:
             old_roll = state[0]
@@ -65,7 +65,7 @@ def work(roll=8, target='3雷3草', keep='', rerolls=2):
                     new_roll -= wild_count
 
                 if new_keep:
-                    new_state = (new_roll, *[(ele, new_keep[ele]) for ele in new_keep])
+                    new_state = (new_roll, *[(ele, new_keep[ele]) for ele in faces if ele in new_keep])
                 else:
                     new_state = (new_roll,)
                 if new_state in new_state_dict:
@@ -86,23 +86,28 @@ def work(roll=8, target='3雷3草', keep='', rerolls=2):
         for n in burn_count:
             if burn_count[n] > 0:
                 print(f'弃{n}张：{burn_count[n]*100:.4f}%')
-        print(sum(state_dict.values()))
-        # t1 = time.process_time()
-        # print('用时', t1 - t0, '秒')
+        t1 = time.process_time()
+        print('用时', t1 - t0, '秒，状态：', len(state_dict))
         # for key, value in state_dict.items():
         #     print(str(key), value)
-        # print()
+        print()
 
 
 def main():
-    work(8, '3雷3草', '', 2)
+    # work(8, '3雷3草', '', 2)
     # work(8, '3雷3草', '', 0)
     # work(8, '3雷3草', '', 4)
     # work(3, '3雷3草', '2万3草')
     # work(4, '3雷3草', '2万2草')
     # work(6, '3雷3草', '2草', 2)
     # work(8, '5水', '', 2)
-    # work(8, '1万1火1冰1水1雷1草1风1岩', '', 1)
+    # work(8, '1万1火1冰1水1雷1草1风1岩', '', 2)
+    # work(8, '8冰', '', 4)
+    # work(4, '8冰', '4冰', 2)
+    # work(6, '8冰', '2冰', 3)
+    work(8, '3雷3草', '', 4)
+    work(5, '3雷3草', '3雷', 2)
+    work(6, '3雷3草', '2雷', 3)
 
 
 if __name__ == '__main__':
